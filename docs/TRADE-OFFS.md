@@ -14,9 +14,9 @@ While a connection pooler is a best practice for production apps under heavy loa
 **Reasoning:**
 While using JSONB columns saves time during initial setup and seeding, it undermines the principles of good database design. Normalizing the data—such as extracting `lastPosts` into a dedicated One-to-Many `Post` table and flattening `audience` data into explicit scalar columns—demonstrates a commitment to scalable, relational architecture and robust typing.
 
-## 3. Database Seeding: Idempotency (Upsert) vs Clean-Slate
+## 3. Database Seeding: Idempotency vs Clean-Slate
 
-**Context:** The `seed.ts` script populates the database using the provided JSON files. The project brief explicitly asks for Setup Instructions.
-**Trade-off Made:** I implemented an **idempotent** seed script using Prisma's `upsert` mechanism instead of a simpler clean-slate approach (which deletes all records before inserting new ones).
+**Context:** The `seed.ts` script populates the database using the provided JSON files.
+**Trade-off Made:** I implemented an **idempotent** seed script using Prisma's `upsert` mechanism.
 **Reasoning:**
-Since the assignment requires setup instructions for reviewers who will independently build and test the project, there is a high likelihood the seed script could be run multiple times. An idempotent script—which safely updates existing records without causing Primary Key conflict errors or duplicating relational data (like the Post table)—ensures a foolproof setup experience. While an upsert script is slightly more verbose to write, the trade-off significantly improves reliability and developer experience by eliminating the risk of accidental database corruption during the evaluation process.
+Since the assignment requires setup instructions for reviewers who will independently build and test the project, there is a high likelihood the seed script could be run multiple times. An idempotent script—which safely updates existing records without causing Primary Key conflict errors or duplicating relational data ensures a foolproof setup experience. While an upsert script is slightly more verbose to write, the trade-off significantly improves reliability and developer experience by eliminating the risk of accidental database corruption during the evaluation process.
