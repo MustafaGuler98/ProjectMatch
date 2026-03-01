@@ -54,3 +54,7 @@ export const ENGAGEMENT_EXTREME_PENALTY = -100;
 
 // Engine
 export const TOP_RESULTS_COUNT = 20;
+
+// AI Brief Generator
+export const GEMINI_MODEL = "gemini-flash-latest";
+export const MAX_RETRY_COUNT = 1;

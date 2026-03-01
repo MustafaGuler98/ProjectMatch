@@ -1,5 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { campaignRouter } from "~/server/api/routers/campaign";
+import { creatorRouter } from "~/server/api/routers/creator";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { campaignRouter } from "~/server/api/routers/campaign";
  */
 export const appRouter = createTRPCRouter({
     campaign: campaignRouter,
+    creator: creatorRouter,
 });
 
 // export type definition of API
