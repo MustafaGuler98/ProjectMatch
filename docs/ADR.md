@@ -13,7 +13,7 @@ Reason: It was explicitly stated as the preferred API layer in the assignment br
 
 Decision 3: Database & ORM
 Decision: Supabase (PostgreSQL) + Prisma ORM.
-Reason: Supabase was preferred in the brief. I added Prisma because its code-first approach and type safety. Note: I configured separate Session and Pooler URLs to avoid Supabase's free tier connection limits in a serverless setup.
+Reason: Supabase was preferred in the brief. I added Prisma because its code-first approach and type safety.
 
 Decision 4: Data Initialization
 Decision: A custom seed.ts script.

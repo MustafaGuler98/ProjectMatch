@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Campaign {
+  id                 String   @id
+  brand              String
+  objective          String
+  targetCountry      String
+  targetGender       String
+  targetAgeRange     String
+  niches             String[]
+  preferredHookTypes String[]
+  minAvgWatchTime    Float
+  minFollowers       Int
+  maxFollowers       Int
+  tone               String
+  doNotUseWords      String[]
+
+  caches             AiCache[]
+}
+
+model Creator {
+  id                 String   @id
+  username           String
+  country            String
+  niches             String[]
+  followers          Int
+  engagementRate     Float
+  avgWatchTime       Float
+  contentStyle       String
+  primaryHookType    String
+  brandSafetyFlags   String[]
+  audienceCountries  String[]
+  audienceFemale     Float
+  audienceMale       Float
+  audienceAgeRange   String
+
+  posts              Post[]
+  caches             AiCache[]
+}
+
+model Post {
+  id        String  @id @default(cuid())
+  creatorId String
+  caption   String
+  views     Int
+  likes     Int
+
+  creator   Creator @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+}
+
+model AiCache {
+  id          String   @id @default(cuid())
+  campaignId  String
+  creatorId   String
+  response    Json
+  createdAt   DateTime @default(now())
+
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  creator     Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, creatorId])
+}

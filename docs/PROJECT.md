@@ -67,12 +67,6 @@ Schema Design:
 The core tables (Campaign, Creator) are structured to directly map the data provided in the campaigns.json and creators.json files.
 A dedicated Cache table is used to store AI-generated responses, fulfilling the project's caching requirement.
 
-Connection Strategy:
-To manage the connection limits of Supabase's free tier in a serverless environment, a dual-URL strategy is employed:
-
-Pooler URL: Used by the running application for all runtime queries to prevent connection exhaustion.
-Direct URL: Used exclusively for one-off CLI tasks like database migrations and running the seed script.
-
 Data Seeding: A custom seed.ts script is included to automate the initial data population. It reads the provided JSON files and uses Prisma Client to insert the records into the database, ensuring a consistent and repeatable setup.
 
 
