@@ -18,7 +18,7 @@ This document explains the scoring algorithm used by the Campaign Matching Engin
 | 8 | Content Style Fit | +10 | 0 |
 | 9 | Content Reach | +20 | -15 |
 | 10 | Brand Safety | 0 | -10 per flag |
-| 11 | Post Engagement Validation | 0 | -100 |
+| 11 | Post Engagement Validation | 0 | -20 |
 
 **Maximum achievable score: 150**
 
@@ -168,24 +168,24 @@ reachRatio = avgViews / followers
 
 ---
 
-### 10 — Brand Safety Penalty (-10 per flag)
+### 10 — Brand Safety Penalty (-10 per matching flag)
 
 **Fields:** `creator.brandSafetyFlags` ↔ `campaign.doNotUseWords`
 
-Each flag in `brandSafetyFlags` represents a potential risk. Every flagged item incurs an independent penalty with no upper cap — a creator with three flags would be penalised -30 points.
+Each flag in `brandSafetyFlags` represents a potential content risk (e.g. `supplement_claim`, `explicit_language`). The penalty is only applied when a flag **matches** one of the campaign's `doNotUseWords`.
 
 | Condition | Points |
 |---|---|
-| No flags | 0 |
-| Per risk flag | -10 |
+| No matching flags (or no doNotUseWords defined) | 0 |
+| Per matching flag | -10 |
 
 ---
 
-### 11 — Post Engagement Validation (max: 0 / min: -100)
+### 11 — Post Engagement Validation (max: 0 / min: -20)
 
 **Fields:** `creator.lastPosts[].views` + `creator.lastPosts[].likes` ↔ `creator.engagementRate`
 
-A creator's self-reported `engagementRate` is cross-validated against their actual post performance. A large discrepancy signals potentially inflated or unreliable metrics and is penalised accordingly.
+A creator's `engagementRate` is cross-validated against their actual post performance. A large discrepancy signals potentially inflated or unreliable metrics and is penalised accordingly.
 
 ```
 computedER  = average(lastPosts.likes / lastPosts.views)
@@ -196,6 +196,6 @@ deviation   = |computedER - reportedER| / reportedER
 | Deviation | Points |
 |---|---|
 | `< 20%` | 0 |
-| `20% – 40%` | -20 |
-| `40% – 80%` | -40 |
-| `> 80%` | -100 |
+| `20% – 50%` | -10 |
+| `50% – 80%` | -15 |
+| `> 80%` | -20 |

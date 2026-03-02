@@ -20,3 +20,10 @@ While using JSONB columns saves time during initial setup and seeding, it underm
 **Trade-off Made:** I implemented an **idempotent** seed script using Prisma's `upsert` mechanism.
 **Reasoning:**
 Since the assignment requires setup instructions for reviewers who will independently build and test the project, there is a high likelihood the seed script could be run multiple times. An idempotent script—which safely updates existing records without causing Primary Key conflict errors or duplicating relational data ensures a foolproof setup experience. While an upsert script is slightly more verbose to write, the trade-off significantly improves reliability and developer experience by eliminating the risk of accidental database corruption during the evaluation process.
+
+## 4. Disabling Window Focus Refetching (React Query)
+
+**Context:** By default, React Query utilizes `refetchOnWindowFocus`, automatically triggering backend queries whenever the user switches tabs or refocuses the browser window.
+**Trade-off Made:** I explicitly disabled this feature (`refetchOnWindowFocus: false`) in the global `query-client.ts` configuration.
+**Reasoning:**
+While real-time syncing is useful for dynamic platforms where data changes frequently by multiple external actors, the scope of this project is static.

@@ -6,6 +6,25 @@ import { TOP_RESULTS_COUNT } from "~/shared/constants";
 import { CAMPAIGN_NOT_FOUND } from "~/shared/messages";
 
 export const campaignRouter = createTRPCRouter({
+    getAll: publicProcedure.query(({ ctx }) =>
+        ctx.db.campaign.findMany({
+            select: {
+                id: true,
+                brand: true,
+                objective: true,
+                targetCountry: true,
+                targetGender: true,
+                targetAgeRange: true,
+                niches: true,
+                preferredHookTypes: true,
+                minFollowers: true,
+                maxFollowers: true,
+                tone: true,
+                doNotUseWords: true,
+            },
+        }),
+    ),
+
     getMatches: publicProcedure
         .input(getMatchesInput)
         .query(async ({ ctx, input }) => {

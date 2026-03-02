@@ -21,3 +21,9 @@ export const AI_GENERATION_FAILED =
 
 export const AI_INVALID_RESPONSE =
     "AI returned an invalid response that could not be parsed.";
+
+export const AI_EMPTY_RESPONSE =
+    "AI returned an empty response.";
+
+export const AI_MALFORMED_JSON = (details: string) =>
+    `AI returned malformed JSON that could not be repaired: ${details}`;

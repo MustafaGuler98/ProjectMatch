@@ -4,8 +4,10 @@ import type { Campaign, Creator } from "@prisma/client";
 
 import { env } from "~/env";
 import { GEMINI_MODEL, MAX_RETRY_COUNT } from "~/shared/constants";
+import { AI_EMPTY_RESPONSE, AI_MALFORMED_JSON } from "~/shared/messages";
 import { aiBriefSchema, type AiBrief } from "./schemas";
 import { buildBriefPrompt } from "./prompt";
+import { repairJson } from "./repair";
 
 const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 
@@ -35,11 +37,25 @@ export async function generateBrief(
 
         const text = response.text;
         if (!text) {
-            lastError = new Error("AI returned an empty response.");
+            lastError = new Error(AI_EMPTY_RESPONSE);
             continue;
         }
 
-        const parseResult = aiBriefSchema.safeParse(JSON.parse(text));
+        // Sanitize common AI JSON issues 
+        const repaired = repairJson(text);
+
+        // Safe parse
+        let parsed: unknown;
+        try {
+            parsed = JSON.parse(repaired);
+        } catch (err) {
+            const detail = err instanceof Error ? err.message : String(err);
+            lastError = new Error(AI_MALFORMED_JSON(detail));
+            continue;
+        }
+
+        // Schema validation via Zod
+        const parseResult = aiBriefSchema.safeParse(parsed);
 
         if (parseResult.success) {
             return parseResult.data;
@@ -50,3 +66,4 @@ export async function generateBrief(
 
     throw lastError ?? new Error("AI brief generation failed.");
 }
+

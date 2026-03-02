@@ -6,6 +6,12 @@ import { generateBrief } from "~/server/services/ai";
 import { aiBriefSchema } from "~/server/services/ai/schemas";
 
 export const creatorRouter = createTRPCRouter({
+    getAll: publicProcedure.query(({ ctx }) =>
+        ctx.db.creator.findMany({
+            select: { id: true, username: true, niches: true, country: true },
+        }),
+    ),
+
     getBrief: publicProcedure
         .input(getBriefInput)
         .query(async ({ ctx, input }) => {
