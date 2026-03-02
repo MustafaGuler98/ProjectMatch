@@ -16,7 +16,7 @@ interface ScoreBreakdown {
     contentStyleFit: number;
     contentReach: number;
     brandSafetyPenalty: number;
-    postEngagementPenalty: number;
+    engagementRateScore: number;
 }
 
 interface RankedCreator {

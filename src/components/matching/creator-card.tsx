@@ -16,7 +16,7 @@ interface ScoreBreakdown {
     contentStyleFit: number;
     contentReach: number;
     brandSafetyPenalty: number;
-    postEngagementPenalty: number;
+    engagementRateScore: number;
 }
 
 interface CreatorCardProps {
@@ -38,7 +38,7 @@ const breakdownLabels: Record<keyof ScoreBreakdown, string> = {
     contentStyleFit: "Content Style",
     contentReach: "Content Reach",
     brandSafetyPenalty: "Brand Safety",
-    postEngagementPenalty: "Post Engagement",
+    engagementRateScore: "Engagement Rate",
 };
 
 function getScoreColor(score: number): string {

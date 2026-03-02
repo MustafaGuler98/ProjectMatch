@@ -18,9 +18,9 @@ This document explains the scoring algorithm used by the Campaign Matching Engin
 | 8 | Content Style Fit | +10 | 0 |
 | 9 | Content Reach | +20 | -15 |
 | 10 | Brand Safety | 0 | -10 per flag |
-| 11 | Post Engagement Validation | 0 | -20 |
+| 11 | Engagement Rate Scoring | +20 | 0 |
 
-**Maximum achievable score: 150**
+**Maximum achievable score: 170**
 
 > All computed values are clamped to their expected min/max range to prevent float arithmetic anomalies from producing out-of-bounds scores.
 
@@ -181,21 +181,20 @@ Each flag in `brandSafetyFlags` represents a potential content risk (e.g. `suppl
 
 ---
 
-### 11 — Post Engagement Validation (max: 0 / min: -20)
+### 11 — Engagement Rate Scoring (max: +20)
 
-**Fields:** `creator.lastPosts[].views` + `creator.lastPosts[].likes` ↔ `creator.engagementRate`
+**Fields:** `creator.engagementRate`
 
-A creator's `engagementRate` is cross-validated against their actual post performance. A large discrepancy signals potentially inflated or unreliable metrics and is penalised accordingly.
+The creator's reported engagement rate is used to award points:
 
 ```
-computedER  = average(lastPosts.likes / lastPosts.views)
-reportedER  = engagementRate
-deviation   = |computedER - reportedER| / reportedER
+reportedER = creator.engagementRate
 ```
 
-| Deviation | Points |
-|---|---|
-| `< 20%` | 0 |
-| `20% – 50%` | -10 |
-| `50% – 80%` | -15 |
-| `> 80%` | -20 |
+| Reported ER | Points | Signal |
+|---|---|---|
+| `>= 12%` | +20 | Top-tier engagement |
+| `>= 9%` | +15 | Above average |
+| `>= 6%` | +10 | Average (median ~7.7%) |
+| `>= 4%` | +5 | Below average |
+| `< 4%` | 0 | Low engagement, no reward |

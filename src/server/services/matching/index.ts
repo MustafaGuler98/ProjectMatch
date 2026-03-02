@@ -11,7 +11,7 @@ import { hookType } from "./rules/hookType";
 import { contentStyle } from "./rules/contentStyle";
 import { contentReach } from "./rules/contentReach";
 import { brandSafety } from "./rules/brandSafety";
-import { postEngagement } from "./rules/postEngagement";
+import { engagementRate } from "./rules/engagementRate";
 
 const rules: ScoringRule[] = [
     nicheRelevance,
@@ -24,7 +24,7 @@ const rules: ScoringRule[] = [
     contentStyle,
     contentReach,
     brandSafety,
-    postEngagement,
+    engagementRate,
 ];
 
 export function scoreCreators(

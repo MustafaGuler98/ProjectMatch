@@ -17,7 +17,7 @@ interface ScoreBreakdown {
     contentStyleFit: number;
     contentReach: number;
     brandSafetyPenalty: number;
-    postEngagementPenalty: number;
+    engagementRateScore: number;
 }
 
 interface CreatorDetailProps {
@@ -42,7 +42,7 @@ const breakdownLabels: Record<keyof ScoreBreakdown, string> = {
     contentStyleFit: "Content Style",
     contentReach: "Content Reach",
     brandSafetyPenalty: "Brand Safety",
-    postEngagementPenalty: "Post Engagement",
+    engagementRateScore: "Engagement Rate",
 };
 
 const maxScores: Record<keyof ScoreBreakdown, number> = {
@@ -56,7 +56,7 @@ const maxScores: Record<keyof ScoreBreakdown, number> = {
     contentStyleFit: 10,
     contentReach: 20,
     brandSafetyPenalty: 10,
-    postEngagementPenalty: 20,
+    engagementRateScore: 20,
 };
 
 export function CreatorDetail({ open, onOpenChange, creator }: CreatorDetailProps) {
@@ -71,11 +71,11 @@ export function CreatorDetail({ open, onOpenChange, creator }: CreatorDetailProp
         creator.scoreBreakdown.followerFit +
         creator.scoreBreakdown.hookMatch +
         creator.scoreBreakdown.contentStyleFit +
-        creator.scoreBreakdown.contentReach;
+        creator.scoreBreakdown.contentReach +
+        creator.scoreBreakdown.engagementRateScore;
 
     const penaltyScore =
-        creator.scoreBreakdown.brandSafetyPenalty +
-        creator.scoreBreakdown.postEngagementPenalty;
+        creator.scoreBreakdown.brandSafetyPenalty;
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
@@ -97,7 +97,7 @@ export function CreatorDetail({ open, onOpenChange, creator }: CreatorDetailProp
                                 <span className="text-5xl font-black text-slate-900 leading-none">
                                     {creator.totalScore}
                                 </span>
-                                <span className="text-lg font-bold text-slate-400">/150</span>
+                                <span className="text-lg font-bold text-slate-400">/170</span>
                             </div>
                         </div>
                         <div className="text-right text-sm font-medium">

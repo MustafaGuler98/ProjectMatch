@@ -44,13 +44,13 @@ export const REACH_BELOW_PENALTY = -15;
 // Brand Safety
 export const BRAND_SAFETY_PER_FLAG_PENALTY = -10;
 
-// Post Engagement Validation
-export const ENGAGEMENT_DEVIATION_BANDS = [
-    { maxDeviation: 0.2, score: 0 },
-    { maxDeviation: 0.5, score: -10 },
-    { maxDeviation: 0.8, score: -15 },
+// Post Engagement Scoring & Validation
+export const ENGAGEMENT_THRESHOLDS = [
+    { min: 0.12, score: 20 },
+    { min: 0.09, score: 15 },
+    { min: 0.06, score: 10 },
+    { min: 0.04, score: 5 },
 ] as const;
-export const ENGAGEMENT_EXTREME_PENALTY = -20;
 
 // Engine
 export const TOP_RESULTS_COUNT = 20;
