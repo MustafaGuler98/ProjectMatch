@@ -13,27 +13,22 @@ import { Card, CardContent } from "~/components/ui/card";
 export default function BriefClient() {
     const [campaignId, setCampaignId] = useState("");
     const [creatorId, setCreatorId] = useState("");
-    const [shouldFetch, setShouldFetch] = useState(false);
-
-    const { data, isLoading, error } = api.creator.getBrief.useQuery(
-        { campaignId, creatorId },
-        { enabled: shouldFetch && campaignId !== "" && creatorId !== "" },
-    );
+    const generateMutation = api.creator.generateBrief.useMutation();
 
     const handleGenerate = () => {
         if (campaignId && creatorId) {
-            setShouldFetch(true);
+            generateMutation.mutate({ campaignId, creatorId });
         }
     };
 
     const handleCampaignChange = (value: string) => {
         setCampaignId(value);
-        setShouldFetch(false);
+        generateMutation.reset();
     };
 
     const handleCreatorChange = (value: string) => {
         setCreatorId(value);
-        setShouldFetch(false);
+        generateMutation.reset();
     };
 
     return (
@@ -68,29 +63,29 @@ export default function BriefClient() {
                 </div>
                 <Button
                     className="bg-slate-800 hover:bg-slate-900 text-white px-6"
-                    disabled={!campaignId || !creatorId || isLoading}
+                    disabled={!campaignId || !creatorId || generateMutation.isPending}
                     onClick={handleGenerate}
                 >
-                    {isLoading ? "Generating..." : "Generate Brief"}
+                    {generateMutation.isPending ? "Generating..." : "Generate Brief"}
                 </Button>
             </div>
 
             {/* Results: full width */}
             <div className="mt-8">
-                {isLoading ? (
+                {generateMutation.isPending ? (
                     <div className="space-y-4">
                         <Skeleton className="h-32 rounded-lg" />
                         <Skeleton className="h-48 rounded-lg" />
                         <Skeleton className="h-32 rounded-lg" />
                     </div>
-                ) : error ? (
+                ) : generateMutation.error ? (
                     <Card className="bg-white border-red-200">
                         <CardContent className="p-4 text-sm text-red-600">
-                            {error.message}
+                            {generateMutation.error.message}
                         </CardContent>
                     </Card>
-                ) : data ? (
-                    <BriefResult data={data} />
+                ) : generateMutation.data ? (
+                    <BriefResult data={generateMutation.data} />
                 ) : (
                     <Card className="bg-white">
                         <CardContent className="flex items-center justify-center p-12 text-sm text-slate-400">

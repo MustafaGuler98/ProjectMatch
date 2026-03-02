@@ -12,6 +12,9 @@ export const CREATOR_ZERO_VIEWS = (id: string) =>
 export const CREATOR_ZERO_ENGAGEMENT = (id: string) =>
     `Creator ${id} has 0 engagementRate — invalid data.`;
 
+export const CREATOR_SCORING_FAILED = (id: string) =>
+    `Scoring failed for creator ${id}:`;
+
 // AI errors
 export const CREATOR_NOT_FOUND = (id: string) =>
     `Creator "${id}" not found.`;

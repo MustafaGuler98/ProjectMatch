@@ -12,9 +12,9 @@ export const creatorRouter = createTRPCRouter({
         }),
     ),
 
-    getBrief: publicProcedure
+    generateBrief: publicProcedure
         .input(getBriefInput)
-        .query(async ({ ctx, input }) => {
+        .mutation(async ({ input, ctx }) => {
             // Check cache first
             const cached = await ctx.db.aiCache.findUnique({
                 where: {

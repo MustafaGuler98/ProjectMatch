@@ -1,5 +1,6 @@
 import type { Campaign } from "@prisma/client";
 import type { CreatorWithPosts, RankedCreator, ScoreBreakdown, ScoringRule } from "./types";
+import { CREATOR_SCORING_FAILED } from "~/shared/messages";
 
 import { nicheRelevance } from "./rules/nicheRelevance";
 import { audienceCountry } from "./rules/audienceCountry";
@@ -31,22 +32,29 @@ export function scoreCreators(
     campaign: Campaign,
     creators: CreatorWithPosts[],
 ): RankedCreator[] {
-    const results: RankedCreator[] = creators.map((creator) => {
-        const breakdown: Record<string, number> = {};
-        let totalScore = 0;
+    const results: RankedCreator[] = creators.flatMap((creator) => {
+        try {
+            const breakdown: Record<string, number> = {};
+            let totalScore = 0;
 
-        for (const rule of rules) {
-            const result = rule(campaign, creator);
-            breakdown[result.label] = result.score;
-            totalScore += result.score;
+            for (const rule of rules) {
+                const result = rule(campaign, creator);
+                breakdown[result.label] = result.score;
+                totalScore += result.score;
+            }
+
+            return [
+                {
+                    creatorId: creator.id,
+                    username: creator.username,
+                    totalScore,
+                    scoreBreakdown: breakdown as unknown as ScoreBreakdown,
+                },
+            ];
+        } catch (error) {
+            console.error(CREATOR_SCORING_FAILED(creator.id), error);
+            return [];
         }
-
-        return {
-            creatorId: creator.id,
-            username: creator.username,
-            totalScore,
-            scoreBreakdown: breakdown as unknown as ScoreBreakdown,
-        };
     });
 
     // Sort descending by totalScore
