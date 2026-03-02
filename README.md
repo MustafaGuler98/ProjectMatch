@@ -1,29 +1,65 @@
-# Create T3 App
+# AI Full Stack Developer Technical Assignment
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This repository contains the implementation of a technical assignment.
 
-## What's next? How do I make an app with this?
+The goal of this assignment is to build a platform that matches brands with content creators based on specific campaign criteria, and to utilize AI to generate personalized outreach briefs.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Local Setup
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Follow these instructions to run the project locally for review.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+### 1. Prerequisites
 
-## Learn More
+- Node.js (v18.x or higher)
+- npm or pnpm
+- A running PostgreSQL database instance (e.g., Supabase)
+- AI API Key (Ai Studio, Gemini)
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### 2. Installation
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Clone the repository and install dependencies:
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+```bash
+git clone <repository_url>
+cd project-match
+npm install
+```
 
-## How do I deploy this?
+### 3. Environment Configuration
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Update your `.env` file with the necessary credentials:
+
+```env
+
+DATABASE_URL="postgresql://user:password@host:port/database_name?schema=public"
+
+GEMINI_API_KEY="your_gemini_api_key_here"
+```
+
+### 4. Database Initialization
+
+Push the Prisma schema to your database and seed it with the provided mock data (campaigns and creators):
+
+```bash
+npx prisma db push
+npm run db:seed
+```
+
+### 5. Running the Application
+
+Start the Next.js development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+---
+
