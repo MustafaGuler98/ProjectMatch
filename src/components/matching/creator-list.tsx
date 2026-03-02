@@ -40,7 +40,7 @@ interface CreatorListProps {
 }
 
 function getScoreBadgeVariant(score: number): "default" | "secondary" | "destructive" {
-    if (score >= 80) return "default"; 
+    if (score >= 80) return "default";
     if (score >= 50) return "secondary";
     return "destructive";
 }
@@ -55,7 +55,7 @@ export function CreatorList({ top20, rest }: CreatorListProps) {
     const [selectedCreator, setSelectedCreator] = useState<RankedCreator | null>(null);
     const [showRest, setShowRest] = useState(false);
 
-    const renderTable = (creators: RankedCreator[], startIndex: number = 0) => (
+    const renderTable = (creators: RankedCreator[], startIndex = 0) => (
         <div className="rounded-md border bg-white">
             <Table>
                 <TableHeader>

@@ -5,7 +5,6 @@ import {
     SheetTitle,
     SheetDescription,
 } from "~/components/ui/sheet";
-import { Separator } from "~/components/ui/separator";
 
 interface ScoreBreakdown {
     nicheMatch: number;
@@ -111,19 +110,19 @@ export function CreatorDetail({ open, onOpenChange, creator }: CreatorDetailProp
                         <h4 className="font-semibold text-slate-900 border-b pb-2">Score Components</h4>
 
                         <div className="grid grid-cols-1 gap-y-3">
-                            {Object.entries(creator.scoreBreakdown)
+                            {(Object.entries(creator.scoreBreakdown) as [keyof ScoreBreakdown, number][])
                                 .sort((a, b) => b[1] - a[1])
                                 .map(([key, value]) => {
                                     const isPenalty = value < 0;
                                     const isZero = value === 0;
-                                    const maxVal = maxScores[key as keyof ScoreBreakdown];
+                                    const maxVal = maxScores[key];
                                     const percentageWidth = isZero ? 0 : Math.min((Math.abs(value) / maxVal) * 100, 100);
 
                                     return (
                                         <div key={key} className="flex flex-col gap-1.5">
                                             <div className="flex justify-between text-sm">
                                                 <span className="font-medium text-slate-700">
-                                                    {breakdownLabels[key as keyof ScoreBreakdown]}
+                                                    {breakdownLabels[key]}
                                                     <span className="text-xs text-slate-400 ml-1">/ {maxVal}</span>
                                                 </span>
                                                 <span className={`font-bold tabular-nums ${isPenalty ? "text-red-600" : isZero ? "text-slate-400" : "text-emerald-600"}`}>
